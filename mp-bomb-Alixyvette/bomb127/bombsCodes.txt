@@ -1,0 +1,6 @@
+All your base are belong to us.
+0 1 1 2 3 5
+5 -96
+80 4 DrEvil
+5 115
+5 2 1 4 6 3
