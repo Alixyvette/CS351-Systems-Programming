@@ -265,12 +265,6 @@ If you carefully check your shell's output against that of the
 reference shell before submission, you should know in advance what your
 grade will be!
 
-## Submission
-
-To submit your work, commit all your changes to "tsh.c" and push to
-Github. Note that we will *not* be using any of the other files in your
-repository to evaluate your work (i.e., we will use a fresh set of supporting
-files), so be sure you're not relying on changes made outside "tsh.c"!
 
 ## Hints
 
