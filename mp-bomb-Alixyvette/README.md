@@ -28,13 +28,6 @@ welcome to the bomb squad!
 
 ## Step 1: Get Your Bomb
 
-As with the previous lab, start by claiming your repository on GitHub via [this
-invitation link](https://classroom.github.com/a/FIXME). After accepting it,
-clone your repository on Fourier with the command (replacing USER with your own
-username):
-
-    git clone https://github.com/cs351/mp-bomb-USER.git
-
 You should now have a directory named "mp-bomb-USER". `cd` into it and obtain
 your bomb by running the command `./getbomb.sh`.
 
