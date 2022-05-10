@@ -244,13 +244,6 @@ calculated as follows:
     min(45, (*P* + (1-0.9)) &times; 45).
 
 
-## Submission
-
-To submit your work, commit all your changes to "malloc.c" and push to
-Github. Note that we will *not* be using any of the other files in your
-repository to evaluate your work (i.e., we will use a fresh set of supporting
-files), so be sure you're not relying on changes made outside "malloc.c"!
-
 
 ## Hints
 
