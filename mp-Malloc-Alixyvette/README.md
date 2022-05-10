@@ -8,16 +8,6 @@ explore the design space creatively and implement an allocator that is correct,
 efficient and fast.
 
 
-## Getting Files
-
-As always, accept the GitHub invitation on the course homepage to create your
-private copy of the starter code repository. Clone your repository on the
-machine where you'll be working.
-
-Before continuing, edit "mmc.c" and sign the header comment at the top of the
-file. This will serve both as an honor pledge and as a way for us to identify
-whose repository it is when evaluating your work.
-
 
 ## Implementation Details
 
