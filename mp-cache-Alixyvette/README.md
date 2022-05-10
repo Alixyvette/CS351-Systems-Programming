@@ -2,23 +2,13 @@
 
 ## Overview
 
-This lab will help you understand the impact that cache memories can
+This lab is to help understand the impact that cache memories can
 have on the performance of your C programs.
 
-The lab consists of two parts. In the first part you will write a small C
-program that simulates the behavior of a cache memory. In the second part, you
-will optimize a small matrix transpose function, with the goal of minimizing the
+The lab consists of two parts. The first part is writing a small C
+program that simulates the behavior of a cache memory. The second part will
+optimize a small matrix transpose function, with the goal of minimizing the
 number of cache misses.
-
-## Getting Files
-
-As always, accept the GitHub invitation on the course homepage to create your
-private copy of the starter code repository. Clone your repository on the
-machine where you'll be working.
-
-Before continuing, edit "csim.c" and sign the header comment at the top of the
-file. This will serve both as an honor pledge and as a way for us to identify
-whose repository it is when evaluating your work.
 
 
 ## Reference Trace Files
@@ -55,12 +45,11 @@ number of bytes accessed by the operation.
 
 ## Part A: Writing a Cache Simulator
 
-In Part A you will write a cache simulator in "csim.c" that
-takes a <span>valgrind</span> memory trace as input, simulates the
-hit/miss behavior of a cache memory on this trace, and outputs the total
-number of hits, misses, and evictions.
+In Part A, a cache simulator in "csim.c" takes a <span>valgrind</span> 
+memory trace as input, simulates the hit/miss behavior of a cache memory 
+on this trace, and outputs the total number of hits, misses, and evictions.
 
-We have provided you with the binary executable of a <span>*reference
+We have provided the binary executable of a <span>*reference
 cache simulator*</span>, called `csim-ref`, that simulates the behavior
 of a cache with arbitrary size and associativity on a <span>
 valgrind</span> trace file. It uses the LRU (least-recently used)
@@ -101,50 +90,48 @@ The same example in verbose mode:
         M 12,1 miss eviction hit 
         hits:4 misses:5 evictions:3
 
-Your job for Part A is to fill in the "csim.c" file so that
+Task for Part A is to fill in the "csim.c" file so that
 it takes the same command line arguments and produces the identical
 output as the reference simulator. Notice that this file is almost
-completely empty. You’ll need to write it from scratch.
+completely empty, will be written from scratch.
 
 ### Programming Rules for Part A
 
--   Your <span>csim.c</span> file must compile without warnings in order
+-   <span>csim.c</span> file must compile without warnings in order
     to receive credit.
 
--   Your simulator must work correctly for arbitrary *s*, *E*, and *b*.  This
-    means that you will need to dynamically allocate storage for your
+-   Simulator must work correctly for arbitrary *s*, *E*, and *b*.  This
+    means that it will need to dynamically allocate storage for the
     simulator’s data structures using the `malloc` function.
 
 -   For this lab, we are interested only in data cache performance, so
-    your simulator should ignore all instruction cache accesses (lines
+    the simulator should ignore all instruction cache accesses (lines
     starting with `I`). Recall that <span>valgrind</span> always puts
     `I` in the first column (with no preceding space), and `M`, `L`, and
-    `S` in the second column (with a preceding space). This may help you
-    parse the trace.
+    `S` in the second column (with a preceding space).
 
--   To receive credit for Part A, you must call the function
+-   To receive credit for Part A, must call the function
     <span>printSummary</span>, with the total number of hits, misses,
-    and evictions, at the end of your <span>main</span> function:
+    and evictions, at the end of the <span>main</span> function:
 
             printSummary(hit_count, miss_count, eviction_count);
 
--   For this this lab, you should assume that memory accesses are
+-   For this this lab, assume that memory accesses are
     aligned properly, such that a single memory access never crosses
-    block boundaries. By making this assumption, you can ignore the
+    block boundaries. By making this assumption, ignore the
     request sizes in the <span>valgrind</span> traces.
 
 ## Part B: Optimizing Matrix Transpose
 
-In Part B you will write a transpose function in <span>trans.c</span>
+In Part B, write a transpose function in <span>trans.c</span>
 that causes as few cache misses as possible.
 
 Let *A* denote a matrix, and *A<sub>ij</sub>* denote the component on the ith
 row and jth column. The <span>*transpose*</span> of *A*, denoted *A<sup>T</sup>*,
 is a matrix such that *A<sub>ij</sub>=A<sup>T</sup><sub>ji</sub>*.
 
-To help you get started, we have given you an example transpose function
-in "trans.c" that computes the transpose of *N &times; M*
-matrix *A* and stores the results in *M &times; N* matrix *B*:
+An example transpose function in "trans.c" that computes the transpose of
+*N &times; M* matrix *A* and stores the results in *M &times; N* matrix *B*:
 
         char trans_desc[] = "Simple row-wise scan transpose";
         void trans(int M, int N, int A[N][M], int B[M][N])
@@ -152,7 +139,7 @@ matrix *A* and stores the results in *M &times; N* matrix *B*:
 The example transpose function is correct, but it is inefficient because
 the access pattern results in relatively many cache misses.
 
-Your job in Part B is to write a similar function, called
+Task in Part B is to write a similar function, called
 `transpose_submit`, that minimizes the number of cache misses across
 different sized matrices:
 
@@ -160,42 +147,42 @@ different sized matrices:
         void transpose_submit(int M, int N, int A[N][M], int B[M][N]);
 
 Do <span>*not*</span> change the description string
-(“`Transpose submission`”) for your `transpose_submit` function. The
+(“`Transpose submission`”) for the `transpose_submit` function. The
 autograder searches for this string to determine which transpose
 function to evaluate for credit.
 
 ### Programming Rules for Part B
 
--   Your code in <span>trans.c</span> must compile without warnings to
+-   Code in <span>trans.c</span> must compile without warnings to
     receive credit.
 
--   You are allowed to define at most 12 local variables of type `int`
+-   Allowed to define at most 12 local variables of type `int`
     per transpose function.
 
--   You are not allowed to side-step the previous rule by using any
+-   Not allowed to side-step the previous rule by using any
     variables of type `long` or by using any bit tricks to store more
     than one value to a single variable.
 
--   Your transpose function may not use recursion.
+-   The transpose function may not use recursion.
 
--   If you choose to use helper functions, you may not have more than 12
-    local variables on the stack at a time between your helper functions
-    and your top level transpose function. For example, if your
-    transpose declares 8 variables, and then you call a function which
-    uses 4 variables, which calls another function which uses 2, you
-    will have 14 variables on the stack, and you will be in violation of
+-   If choosing to use helper functions, may not have more than 12
+    local variables on the stack at a time between the helper functions
+    and the top level transpose function. For example, if the
+    transpose declares 8 variables, and then call a function which
+    uses 4 variables, which calls another function which uses 2, it
+    will have 14 variables on the stack, and it will be in violation of
     the rule.
 
--   Your transpose function may not modify array A. You may, however, do
-    whatever you want with the contents of array B.
+-   The transpose function may not modify array A. It may, however, do
+    whatever with the contents of array B.
 
--   You are NOT allowed to define any arrays in your code or to use any
+-   NOT allowed to define any arrays in code or to use any
     variant of <span>malloc</span>.
 
 Evaluation
 ----------
 
-This section describes how your work will be evaluated. The full score
+This section describes how the work will be evaluated. The full score
 for this lab is 53 points:
 
 -   Part A: 27 Points
@@ -204,7 +191,7 @@ for this lab is 53 points:
 
 ### Evaluation for Part A
 
-For Part A, we will run your cache simulator using different cache
+For Part A, we will run cache simulator using different cache
 parameters and traces. There are eight test cases, each worth 3 points,
 except for the last case, which is worth 6 points:
 
@@ -217,21 +204,21 @@ except for the last case, which is worth 6 points:
       linux> ./csim -s 5 -E 1 -b 5 -t traces/trans.trace
       linux> ./csim -s 5 -E 1 -b 5 -t traces/long.trace
 
-You can use the reference simulator `csim-ref` to obtain the correct
+Can use the reference simulator `csim-ref` to obtain the correct
 answer for each of these test cases. During debugging, use the
 <span>-v</span> option for a detailed record of each hit and miss.
 
 For each test case, outputting the correct number of cache hits, misses
-and evictions will give you full credit for that test case. Each of your
+and evictions will give the full credit for that test case. Each of the
 reported number of hits, misses and evictions is worth 1/3 of the credit
 for that test case. That is, if a particular test case is worth 3
-points, and your simulator outputs the correct number of hits and
-misses, but reports the wrong number of evictions, then you will earn 2
+points, and the simulator outputs the correct number of hits and
+misses, but reports the wrong number of evictions, then it will earn 2
 points.
 
 ### Evaluation for Part B
 
-For Part B, we will evaluate the correctness and performance of your
+For Part B, we will evaluate the correctness and performance of the
 `transpose_submit` function on three different-sized output matrices:
 
 -   *32 &times; 32* (*M=32*, *N=32*)
@@ -242,12 +229,12 @@ For Part B, we will evaluate the correctness and performance of your
 
 #### Performance (26 pts)
 
-For each matrix size, the performance of your `transpose_submit`
+For each matrix size, the performance of the `transpose_submit`
 function is evaluated by using <span>valgrind</span> to extract the
-address trace for your function, and then using the reference simulator
+address trace for the function, and then using the reference simulator
 to replay this trace on a cache with parameters (*s=5*, *E=1*, *b=5*).
 
-Your performance score for each matrix size scales linearly with the
+The performance score for each matrix size scales linearly with the
 number of misses, *m*, up to some threshold:
 
 -   *32 &times; 32*: 8 points if *m < 300*, 0 points if *m > 600*
@@ -256,10 +243,10 @@ number of misses, *m*, up to some threshold:
 
 -   *61 &times; 67*: 10 points if *m < 2,000*, 0 points if *m > 3,000*
 
-Your code must be correct and adhere to the programming rules to receive any
-performance points for a particular size. Your code only needs to be correct for
-these three cases and you can optimize it specifically for these three cases. In
-particular, it is perfectly OK for your function to explicitly check for the
+The code must be correct and adhere to the programming rules to receive any
+performance points for a particular size. The code only needs to be correct for
+these three cases and it can optimize it specifically for these three cases. In
+particular, it is perfectly OK for the function to explicitly check for the
 input sizes and implement separate code optimized for each case.
 
 Working on the Lab
@@ -267,9 +254,9 @@ Working on the Lab
 
 ### Working on Part A
 
-We have provided you with an autograding program, called `test-csim`,
-that tests the correctness of your cache simulator on the reference
-traces. Be sure to compile your simulator before running the test:
+We have provided an autograding program, called `test-csim`,
+that tests the correctness of the cache simulator on the reference
+traces. Be sure to compile the simulator before running the test:
 
     linux> make
     linux> ./test-csim
@@ -285,25 +272,25 @@ traces. Be sure to compile your simulator before running the test:
          6 (5,1,5)  265189   21775   21743  265189   21775   21743  traces/long.trace
         27
 
-For each test, it shows the number of points you earned, the cache
+For each test, it shows the number of points earned, the cache
 parameters, the input trace file, and a comparison of the results from
-your simulator and the reference simulator.
+the simulator and the reference simulator.
 
 Here are some hints and suggestions for working on Part A:
 
--   Do your initial debugging on the small traces, such as
+-   Do the initial debugging on the small traces, such as
     `traces/dave.trace`.
 
 -   The reference simulator takes an optional `-v` argument that enables
     verbose output, displaying the hits, misses, and evictions that
-    occur as a result of each memory access. You are not required to
-    implement this feature in your <span>csim.c</span> code, but we
-    strongly recommend that you do so. It will help you debug by
-    allowing you to directly compare the behavior of your simulator with
+    occur as a result of each memory access. Is is not required to
+    implement this feature in the <span>csim.c</span> code, but we
+    strongly recommend that it is done so. It will help to debug by
+    allowing to directly compare the behavior of your simulator with
     the reference simulator on the reference trace files.
 
--   We recommend that you use the <span>getopt</span> function to parse
-    your command line arguments. You’ll need the following header files:
+-   We recommend using the <span>getopt</span> function to parse
+    the command line arguments. You’ll need the following header files:
 
             #include <getopt.h> 
             #include <stdlib.h> 
@@ -319,11 +306,11 @@ Here are some hints and suggestions for working on Part A:
 
 ### Working on Part B
 
-We have provided you with an autograding program, called <span>
+We have provided an autograding program, called <span>
 test-trans.c</span>, that tests the correctness and performance of each
-of the transpose functions that you have registered with the autograder.
+of the transpose functions that is registered with the autograder.
 
-You can register up to 100 versions of the transpose function in your
+It can register up to 100 versions of the transpose function in the
 <span>trans.c</span> file. Each transpose version has the following
 form:
 
@@ -342,7 +329,7 @@ call of the form:
 in the `registerFunctions` routine in <span>"trans.c"</span>.  At runtime, the
 autograder will evaluate each registered transpose function and print the
 results. Of course, one of the registered functions must be the
-`transpose_submit` function that you are submitting for credit:
+`transpose_submit` function that is being submitting for credit:
 
         registerTransFunction(transpose_submit, transpose_submit_desc);
 
@@ -354,7 +341,7 @@ The autograder takes the matrix size as input. It uses
 function. It then evaluates each trace by running the reference
 simulator on a cache with parameters (*s=5*, *E=1*, *b=5*).
 
-For example, to test your registered transpose functions on a *32
+For example, to test the registered transpose functions on a *32
 &times; 32* matrix, rebuild `test-trans`, and then run it with the
 appropriate values for *M* and *N*:
 
@@ -385,7 +372,7 @@ Here are some hints and suggestions for working on Part B.
 
 -   The <span>test-trans</span> program saves the trace for function *i*
     in file "trace.f*i*". These trace files are
-    invaluable debugging tools that can help you understand exactly
+    invaluable debugging tools that can help to understand exactly
     where the hits and misses for each transpose function are
     coming from. To debug a particular function, simply run its trace
     through the reference simulator with the verbose option:
@@ -399,9 +386,9 @@ Here are some hints and suggestions for working on Part B.
         S 6431a0,4 miss 
         ...
 
--   Since your transpose function is being evaluated on a direct-mapped
+-   Since the transpose function is being evaluated on a direct-mapped
     cache, conflict misses are a potential problem. Think about the
-    potential for conflict misses in your code, especially along
+    potential for conflict misses in the code, especially along
     the diagonal. Try to think of access patterns that will decrease the
     number of these conflict misses.
 
@@ -411,22 +398,14 @@ Here are some hints and suggestions for working on Part B.
 
 ### Putting it all Together
 
-We have provided you with a <span>*driver program*</span>, called
-`./driver.py`, that performs a complete evaluation of your simulator and
-transpose code. This is the same program your instructor uses to
-evaluate your handins. The driver uses <span>test-csim</span> to
-evaluate your simulator, and it uses <span>test-trans</span> to evaluate
-your submitted transpose function on the three matrix sizes. Then it
-prints a summary of your results and the points you have earned.
+We have provided a <span>*driver program*</span>, called
+`./driver.py`, that performs a complete evaluation of the simulator and
+transpose code. This is the same program the instructor uses to
+evaluate handins. The driver uses <span>test-csim</span> to
+evaluate the simulator, and it uses <span>test-trans</span> to evaluate
+the submitted transpose function on the three matrix sizes. Then it
+prints a summary of the results and the points earned.
 
 To run the driver, type:
 
     linux> ./driver.py
-
-## Submission
-
-To submit your work, commit all your changes to "csim.c" and "trans.c" and push
-to Github. Note that we will *not* be using any of the other files in your
-repository to evaluate your work (i.e., we will use a fresh set of supporting
-files), so be sure you're not relying on changes made outside of the named
-files!
